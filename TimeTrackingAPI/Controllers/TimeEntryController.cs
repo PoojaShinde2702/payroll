@@ -1,11 +1,12 @@
-﻿// Controllers/TimeEntryController.cs
+﻿using Data.Interface;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using TimeTrackingAPI.Interfaces;
+using Models;
 
 namespace TimeTrackingAPI.Controllers
 {
-    [ApiController]
     [Route("api/[controller]")]
+    [ApiController]
     public class TimeEntryController : ControllerBase
     {
         private readonly ITimeEntryService _timeEntryService;

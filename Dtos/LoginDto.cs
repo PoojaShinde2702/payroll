@@ -1,4 +1,4 @@
-﻿namespace TimeTrackingAPI.DTOs
+﻿namespace Dtos
 {
     public class LoginDto
     {

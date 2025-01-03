@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Data.Interface;
+using Data.Repository;
+using Dtos;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using TimeTrackingAPI.DTOs;
-using TimeTrackingAPI.Interfaces;
-using TimeTrackingAPI.Services;
+using Models;
 
 namespace TimeTrackingAPI.Controllers
 {
@@ -10,24 +11,24 @@ namespace TimeTrackingAPI.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUserService _userService;
+        private readonly IUserRepository _userRepository;
 
-        public UserController(IUserService userService)
+        public UserController(IUserRepository userRepository)
         {
-            _userService = userService;
+            _userRepository = userRepository;
         }
 
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterDto model)
         {
-            var user = await _userService.Register(model);
+            var user = await _userRepository.Register(model);
             return Ok(new { message = "Registration successful", userId = user.Id });
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDto model)
         {
-            var user = await _userService.Login(model);
+            var user = await _userRepository.Login(model);
             if (user == null)
                 return Unauthorized(new { message = "Invalid email or password" });
 

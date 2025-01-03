@@ -1,5 +1,9 @@
-using TimeTrackingAPI.Interfaces;
-using TimeTrackingAPI.Services;
+using Data.Interface;
+using Data.Repository;
+using MySql.Data.MySqlClient;
+using Services;
+using System.Data;
+using TimeTrackingAPI.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,9 +12,17 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Register services
-builder.Services.AddScoped<IUserService, UserService>();
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddScoped<IDbConnection>(sp => new MySqlConnection(connectionString));
+
+// Register repositories
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ITimeEntryRepository, TimeEntryRepository>();
+builder.Services.AddHostedService<AutoClockOutService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ITimeEntryService, TimeEntryService>();
+
+
 
 var app = builder.Build();
 
